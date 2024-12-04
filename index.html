@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chuyển đổi Chữ</title>
+    <meta name="description" content="Ứng dụng chuyển đổi chữ giúp bạn dễ dàng chuyển đổi giữa chữ hoa, chữ thường, viết hoa chữ cái đầu và viết hoa mỗi từ.">
+    <link rel="hihi" href="https://webdio.web.app/images/iconweb.png" type="image/png">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        body {
+            background-image: url('anh-doremon-cute-21.jpg');
+            background-size: cover;
+            background-attachment: fixed;
+            font-family: 'Roboto', sans-serif;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-top: 50px;
+        }
+        h1 {
+            color: #76a7db;
+        }
+        .result {
+            position: relative;
+            white-space: pre-wrap;
+            background-color: #e9ecef;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            padding: 10px;
+            height: 100px;
+            overflow-y: auto;
+        }
+        .copy-btn {
+            margin-top: 10px;
+        }
+        textarea {
+            font-size: 1.2rem;
+        }
+        .footer {
+            background: linear-gradient(to right, #7bbafe, #cebeec);
+            padding: 10px;
+            text-align: center;
+            color: #ffffff;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center mb-4">Chuyển đổi Chữ</h1>
+        <div class="form-group">
+            <label for="inputText" class="font-weight-bold">Nhập dãy chữ (cách nhau bằng dấu phẩy):</label>
+            <textarea class="form-control" id="inputText" rows="3"></textarea>
+        </div>
+        <div id="resultContainer" class="row">
+            <div class="col-6 mt-3">
+                <div><strong>Chữ hoa</strong></div>
+                <div class="result" id="uppercaseResult"></div>
+                <button class="btn btn-success copy-btn" id="copyUppercaseBtn"><i class="fas fa-clipboard"></i> Sao chép</button>
+            </div>
+            <div class="col-6 mt-3">
+                <div><strong>Chữ thường</strong></div>
+                <div class="result" id="lowercaseResult"></div>
+                <button class="btn btn-success copy-btn" id="copyLowercaseBtn"><i class="fas fa-clipboard"></i> Sao chép</button>
+            </div>
+            <div class="col-6 mt-3">
+                <div><strong>Viết hoa chữ cái đầu</strong></div>
+                <div class="result" id="capitalizeResult"></div>
+                <button class="btn btn-success copy-btn" id="copyCapitalizeBtn"><i class="fas fa-clipboard"></i> Sao chép</button>
+            </div>
+            <div class="col-6 mt-3">
+                <div><strong>Viết hoa mỗi từ</strong></div>
+                <div class="result" id="titlecaseResult"></div>
+                <button class="btn btn-success copy-btn" id="copyTitlecaseBtn"><i class="fas fa-clipboard"></i> Sao chép</button>
+            </div>
+        </div>
+    </div>
+    <footer class="footer">
+        <span>© 2024 hoang-hung. All Rights Reserved.</span>
+    </footer>
+    <script>
+        document.getElementById("inputText").addEventListener("input", function () {
+            const inputText = document.getElementById("inputText").value;
+            const formattedText = inputText.split(",").join("\n");
+
+            document.getElementById("uppercaseResult").textContent = formattedText.toUpperCase();
+            document.getElementById("lowercaseResult").textContent = formattedText.toLowerCase();
+            document.getElementById("capitalizeResult").textContent = formattedText.replace(/\b\w/g, char => char.toUpperCase());
+            document.getElementById("titlecaseResult").textContent = formattedText.replace(/\b\w/g, char => char.toUpperCase());
+        });
+
+        function copyToClipboard(id) {
+            const textToCopy = document.getElementById(id).textContent;
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Đã sao chép!',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            });
+        }
+
+        document.getElementById("copyUppercaseBtn").addEventListener("click", () => copyToClipboard("uppercaseResult"));
+        document.getElementById("copyLowercaseBtn").addEventListener("click", () => copyToClipboard("lowercaseResult"));
+        document.getElementById("copyCapitalizeBtn").addEventListener("click", () => copyToClipboard("capitalizeResult"));
+        document.getElementById("copyTitlecaseBtn").addEventListener("click", () => copyToClipboard("titlecaseResult"));
+    </script>
+</body>
+</html>
