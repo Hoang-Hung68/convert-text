@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Convert - Text</title>
+    <title>Chuyển đổi Chữ</title>
     <meta name="description" content="Ứng dụng chuyển đổi chữ giúp bạn dễ dàng chuyển đổi giữa chữ hoa, chữ thường, viết hoa chữ cái đầu và viết hoa mỗi từ.">
     <link rel="hihi" href="https://webdio.web.app/images/iconweb.png" type="image/png">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -53,14 +53,11 @@
             bottom: 0;
             width: 100%;
         }
-       
     </style>
 </head>
 <body>
     <div class="container">
-        <h1 class="text-center mb-4">Chuyển đổi Chữ</h1>
-        
-        </div>
+        <h1 class="text-center mb-4">Convert-Text</h1>
         <div class="form-group">
             <label for="inputText" class="font-weight-bold">Nhập dãy chữ (cách nhau bằng dấu phẩy):</label>
             <textarea class="form-control" id="inputText" rows="3"></textarea>
@@ -118,8 +115,6 @@
         document.getElementById("copyLowercaseBtn").addEventListener("click", () => copyToClipboard("lowercaseResult"));
         document.getElementById("copyCapitalizeBtn").addEventListener("click", () => copyToClipboard("capitalizeResult"));
         document.getElementById("copyTitlecaseBtn").addEventListener("click", () => copyToClipboard("titlecaseResult"));
-
-
     </script>
 </body>
 </html>
