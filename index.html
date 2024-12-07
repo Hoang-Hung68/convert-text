@@ -1,120 +1,173 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chuyển đổi Chữ</title>
-    <meta name="description" content="Ứng dụng chuyển đổi chữ giúp bạn dễ dàng chuyển đổi giữa chữ hoa, chữ thường, viết hoa chữ cái đầu và viết hoa mỗi từ.">
-    <link rel="hihi" href="https://webdio.web.app/images/iconweb.png" type="image/png">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <title>Convert-Text</title>
     <style>
         body {
-            background-image: url('anh-doremon-cute-21.jpg');
-            background-size: cover;
-            background-attachment: fixed;
-            font-family: 'Roboto', sans-serif;
+            background-image: url("anh-doremon-cute-21.jpg"); 
+            font-family: Arial, sans-serif;
+            margin: 20px;
         }
         .container {
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            margin-top: 50px;
+            max-width: 800px;
+            margin: 0 auto;
         }
         h1 {
-            color: #76a7db;
+            text-align: center;
         }
-        .result {
-            position: relative;
-            white-space: pre-wrap;
-            background-color: #e9ecef;
-            border: 1px solid #ced4da;
-            border-radius: 5px;
+        textarea, .output {
+            width: 90%;
             padding: 10px;
-            height: 100px;
-            overflow-y: auto;
+            margin: 10px 0;
+            border: 1px solid #a5d3ec;
+            border-radius: 5px;
+            resize: none;
+        }
+        .output {
+            background-color: #f9f9f9;
+            color: #1e1b1b;
         }
         .copy-btn {
-            margin-top: 10px;
+            display: inline-block;
+            margin: 5px 0;
+            padding: 5px 10px;
+            color: #5db7f3;
+            background-color: #f2f5f8;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
         }
-        textarea {
-            font-size: 1.2rem;
+        .copy-btn:hover {
+            background-color: #f4f6f9;
         }
-        .footer {
-            background: linear-gradient(to right, #7bbafe, #cebeec);
-            padding: 10px;
+        .output-container {
+            display: flex;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+        .column {
+            flex: 1;
+            min-width: 45%;
+            margin: 10px;
+        }
+        .column-title {
+            font-weight: bold;
+            margin-bottom: 10px;
             text-align: center;
-            color: #ffffff;
+        }
+        .notification {
             position: fixed;
-            bottom: 0;
-            width: 100%;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            opacity: 1;
+            transition: opacity 1s ease-in-out;
+        }
+        .notification.fade-out {
+            opacity: 0;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1 class="text-center mb-4">Convert-Text</h1>
-        <div class="form-group">
-            <label for="inputText" class="font-weight-bold">Nhập dãy chữ (cách nhau bằng dấu phẩy):</label>
-            <textarea class="form-control" id="inputText" rows="3"></textarea>
-        </div>
-        <div id="resultContainer" class="row">
-            <div class="col-6 mt-3">
-                <div><strong>Chữ hoa</strong></div>
-                <div class="result" id="uppercaseResult"></div>
-                <button class="btn btn-success copy-btn" id="copyUppercaseBtn"><i class="fas fa-clipboard"></i> Sao chép</button>
-            </div>
-            <div class="col-6 mt-3">
-                <div><strong>Chữ thường</strong></div>
-                <div class="result" id="lowercaseResult"></div>
-                <button class="btn btn-success copy-btn" id="copyLowercaseBtn"><i class="fas fa-clipboard"></i> Sao chép</button>
-            </div>
-            <div class="col-6 mt-3">
-                <div><strong>Viết hoa chữ cái đầu</strong></div>
-                <div class="result" id="capitalizeResult"></div>
-                <button class="btn btn-success copy-btn" id="copyCapitalizeBtn"><i class="fas fa-clipboard"></i> Sao chép</button>
-            </div>
-            <div class="col-6 mt-3">
-                <div><strong>Viết hoa mỗi từ</strong></div>
-                <div class="result" id="titlecaseResult"></div>
-                <button class="btn btn-success copy-btn" id="copyTitlecaseBtn"><i class="fas fa-clipboard"></i> Sao chép</button>
-            </div>
-        </div>
+        <h1>Convert-Text</h1>
+        <textarea id="inputText" rows="5" placeholder="Nhập văn bản ở đây..."></textarea>
+
+        <div id="outputs" class="output-container"></div>
     </div>
-    <footer class="footer">
-        <span>© 2024 hoang-hung. All Rights Reserved.</span>
-    </footer>
+
     <script>
-        document.getElementById("inputText").addEventListener("input", function () {
-            const inputText = document.getElementById("inputText").value;
-            const formattedText = inputText.split(",").join("\n");
+        const inputText = document.getElementById('inputText');
+        const outputs = document.getElementById('outputs');
+        const maxLines = 7;
 
-            document.getElementById("uppercaseResult").textContent = formattedText.toUpperCase();
-            document.getElementById("lowercaseResult").textContent = formattedText.toLowerCase();
-            document.getElementById("capitalizeResult").textContent = formattedText.replace(/\b\w/g, char => char.toUpperCase());
-            document.getElementById("titlecaseResult").textContent = formattedText.replace(/\b\w/g, char => char.toUpperCase());
-        });
+        inputText.addEventListener('input', processText);
 
-        function copyToClipboard(id) {
-            const textToCopy = document.getElementById(id).textContent;
-            navigator.clipboard.writeText(textToCopy).then(() => {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Đã sao chép!',
-                    showConfirmButton: false,
-                    timer: 1500
+        function processText() {
+            const text = inputText.value.trim();
+            const lines = text.split(',').map(line => line.trim());
+            
+            const results = {
+                'Chữ Hoa': lines.map(line => line.toUpperCase()),
+                'Chữ Thường': lines.map(line => line.toLowerCase()),
+                'Viết Hoa Chữ Đầu': lines.map(line => line.charAt(0).toUpperCase() + line.slice(1).toLowerCase()),
+                'Viết Hoa chữ cái đầu': lines.map(line => line.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' '))
+            };
+
+            outputs.innerHTML = '';
+
+            Object.entries(results).forEach(([title, result]) => {
+                const outputDiv = document.createElement('div');
+                outputDiv.className = 'column';
+
+                const columnTitle = document.createElement('div');
+                columnTitle.className = 'column-title';
+                columnTitle.textContent = title;
+
+                outputDiv.appendChild(columnTitle);
+
+                const chunks = splitIntoColumns(result, maxLines);
+
+                chunks.forEach(chunk => {
+                    const textarea = document.createElement('textarea');
+                    textarea.className = 'output';
+                    textarea.rows = chunk.length;
+                    textarea.readOnly = true;
+                    textarea.value = chunk.join('\n');
+
+                    const copyButton = document.createElement('button');
+                    copyButton.className = 'copy-btn';
+                    copyButton.textContent = 'Copy';
+                    copyButton.addEventListener('click', () => copyToClipboard(chunk.join('\n')));
+
+                    outputDiv.appendChild(textarea);
+                    outputDiv.appendChild(copyButton);
                 });
+
+                outputs.appendChild(outputDiv);
             });
         }
 
-        document.getElementById("copyUppercaseBtn").addEventListener("click", () => copyToClipboard("uppercaseResult"));
-        document.getElementById("copyLowercaseBtn").addEventListener("click", () => copyToClipboard("lowercaseResult"));
-        document.getElementById("copyCapitalizeBtn").addEventListener("click", () => copyToClipboard("capitalizeResult"));
-        document.getElementById("copyTitlecaseBtn").addEventListener("click", () => copyToClipboard("titlecaseResult"));
+        function splitIntoColumns(array, maxLines) {
+            if (array.length <= maxLines) {
+                return [array];
+            }
+
+            const mid = Math.ceil(array.length / 2);
+            return [array.slice(0, mid), array.slice(mid)];
+        }
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                showNotification('Đã sao chép thành công!');
+            }).catch(err => {
+                console.error('Lỗi khi sao chép:', err);
+            });
+        }
+
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.textContent = message;
+
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.classList.add('fade-out');
+            }, 1500); // Hiển thị trong 1.5 giây
+
+            setTimeout(() => {
+                notification.remove();
+            }, 2500); // Xóa sau khi ẩn dần
+        }
     </script>
 </body>
 </html>
